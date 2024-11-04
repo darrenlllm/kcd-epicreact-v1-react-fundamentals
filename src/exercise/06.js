@@ -19,13 +19,50 @@ function UsernameForm({onSubmitUsername}) {
 
   // 🐨 make sure to associate the label to the input.
   // to do so, set the value of 'htmlFor' prop of the label to the id of input
+  const usernameInput = React.useRef()
+  const formsubmitButton = React.useRef()
+  // const [errorMessage, setErrorMessage] = React.useState(null)
+  const [username, setUsername] = React.useState('')
+
+  const handleSubmit = event => {
+    event.preventDefault()
+    // console.log('form elements:', event.target.elements)
+    console.log('form elem username:', event.target.username.value)
+    console.log('form elem username via ref:', usernameInput.current?.value)
+
+    // onSubmitUsername(event.target.username.value)
+    onSubmitUsername(usernameInput.current?.value)
+  }
+
+  const handleChange = event => {
+    const value = event.target.value
+    setUsername(value.toLowerCase())
+
+    // if (value !== value.toLowerCase()) {
+    //   setErrorMessage('Username must be lower case')
+    //   formsubmitButton.current?.setAttribute('disabled', 'true')
+    // } else {
+    //   setErrorMessage(null)
+    //   formsubmitButton.current?.removeAttribute('disabled')
+    // }
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>
-        <label>Username:</label>
-        <input type="text" />
+        <label htmlFor="username">Username:</label>
+        <input
+          id="username"
+          type="text"
+          ref={usernameInput}
+          onChange={handleChange}
+          value={username}
+        />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" ref={formsubmitButton}>
+        Submit
+      </button>
+      {/* <div role="alert">{errorMessage}</div> */}
     </form>
   )
 }
